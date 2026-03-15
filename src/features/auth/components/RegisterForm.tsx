@@ -10,6 +10,7 @@ import {
   FormLabel,
   FormSubmit,
 } from "@/components/forms";
+import { signUpAction } from "../actions/auth-actions";
 import { SignUpSchema, SignUpInput } from "../schemas/authSchema";
 
 export default function RegisterForm() {
@@ -22,8 +23,8 @@ export default function RegisterForm() {
     mode: "all",
   });
 
-  const onSubmit = (data: SignUpInput) => {
-    console.log(data);
+  const onSubmit = async (data: SignUpInput) => {
+    await signUpAction(data);
   };
 
   return (
