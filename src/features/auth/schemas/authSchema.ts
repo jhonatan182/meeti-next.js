@@ -13,6 +13,12 @@ export const BaseAuthSchema = z.object({
     .min(1, { error: "La contraseña de confirmación es obligatoria" }),
 });
 
+export const SignInSchema = BaseAuthSchema.pick({
+  email: true,
+}).extend({
+  password: z.string().trim().min(1, { error: "La contraseña es obligatoria" }),
+});
+
 export const SignUpSchema = BaseAuthSchema.pick({
   name: true,
   email: true,
@@ -24,3 +30,4 @@ export const SignUpSchema = BaseAuthSchema.pick({
 });
 
 export type SignUpInput = z.infer<typeof SignUpSchema>;
+export type SignInInput = z.infer<typeof SignInSchema>;

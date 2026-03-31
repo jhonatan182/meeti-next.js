@@ -1,25 +1,64 @@
 "use client";
 
-import { Form, FormInput, FormLabel, FormSubmit } from "@/components/forms";
+import {
+  Form,
+  FormError,
+  FormInput,
+  FormLabel,
+  FormSubmit,
+} from "@/components/forms";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { SignInSchema, SignInInput } from "../schemas/authSchema";
+import { signInAction } from "../actions/auth-actions";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: zodResolver(SignInSchema),
+    mode: "all",
+  });
+
+  const onSubmit = async (data: SignInInput) => {
+    const { success, error } = await signInAction(data);
+
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    if (success) {
+      toast.success(success);
+      reset();
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormLabel htmlFor="email">E-mail</FormLabel>
 
       <FormInput
         type="email"
         id="email"
-        name="email"
         placeholder="Ingresa tu E-mail"
+        {...register("email")}
       />
+      {errors.email && <FormError>{errors.email.message}</FormError>}
+
       <FormLabel htmlFor="password">Password</FormLabel>
       <FormInput
         type="password"
         id="password"
-        name="password"
         placeholder="Ingresa tu password"
+        {...register("password")}
       />
+      {errors.password && <FormError>{errors.password.message}</FormError>}
+
       <FormSubmit value="Iniciar sesión" />
     </Form>
   );
