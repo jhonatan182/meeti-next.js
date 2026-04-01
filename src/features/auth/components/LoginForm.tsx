@@ -1,5 +1,12 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { redirect } from "next/navigation";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+import { SignInSchema, SignInInput } from "../schemas/authSchema";
+import { signInAction } from "../actions/auth-actions";
 import {
   Form,
   FormError,
@@ -7,11 +14,6 @@ import {
   FormLabel,
   FormSubmit,
 } from "@/components/forms";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { SignInSchema, SignInInput } from "../schemas/authSchema";
-import { signInAction } from "../actions/auth-actions";
-import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const {
@@ -34,6 +36,7 @@ export default function LoginForm() {
 
     if (success) {
       toast.success(success);
+      redirect("/dashboard");
       reset();
     }
   };
