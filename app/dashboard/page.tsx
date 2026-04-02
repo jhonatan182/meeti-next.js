@@ -1,4 +1,5 @@
 import { requireAuth } from "@/src/lib/auth-server";
+import Heading from "@/src/shared/components/typography/Heading";
 import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
@@ -8,5 +9,5 @@ export default async function DashboardPage() {
     return redirect("/auth/login");
   }
 
-  return <div>DashboardPage</div>;
+  return <Heading>Panel de Administración</Heading>;
 }
